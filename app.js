@@ -12,6 +12,7 @@ const geojsonInput = document.getElementById('geojson-input');
 const fileNameDisplay = document.getElementById('file-name');
 const layerListEl = document.getElementById('layer-list');
 const notification = document.getElementById('notification');
+const removeMarkerBtn = document.getElementById('remove-marker');
 
 // Store loaded layers
 const loadedLayers = new Map();
@@ -25,6 +26,7 @@ async function init() {
 
 // Setup all event listeners
 function setupEventListeners() {
+    removeMarkerBtn.addEventListener('click', handleRemoveAllMarkers);
     basemapSelect.addEventListener('change', handleBasemapChange);
     locationSelect.addEventListener('change', handleLocationChange);
     addMarkerBtn.addEventListener('click', handleAddMarker);
@@ -81,6 +83,22 @@ async function handleAddMarker() {
 
     view.graphics.add(pointGraphic);
     showNotification('Marker added successfully!', 'success');
+}
+
+// Remove ALL markers at once
+async function handleRemoveAllMarkers() {
+    const view = mapEl.view;
+    const graphics = view.graphics;
+
+    if (graphics.length === 0) {
+        showNotification('No markers to remove', 'error');
+        return;
+    }
+
+    const count = graphics.length;
+    graphics.removeAll();
+
+    showNotification(`Removed ${count} marker(s)`, 'success');
 }
 
 // Handle GeoJSON file upload
