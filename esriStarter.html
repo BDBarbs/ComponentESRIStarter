@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESRI Map Components App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        #map-container {
+            flex: 1;
+            position: relative;
+        }
+
+        arcgis-map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            padding: 1rem;
+            z-index: 1000;
+            min-width: 200px;
+        }
+
+        .control-group {
+            margin-bottom: 1rem;
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        select:hover, select:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 999;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script type="importmap">
+        {
+          "imports": {
+            "@arcgis/core/": "https://js.arcgis.com/4.30/@arcgis/core/"
+          }
+        }
+    </script>
+    <script type="module" src="https://js.arcgis.com/map-components/4.30/arcgis-map-components.esm.js"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css">
+</head>
+<body>
+<div id="container">
+    <header>
+        <h1>Interactive Map Viewer</h1>
+        <p class="subtitle">Powered by ArcGIS Maps SDK for JavaScript</p>
+    </header>
+
+    <div id="map-container">
+        <div class="loader" id="loader">
+            <div class="spinner"></div>
+            <p style="margin-top: 1rem; color: #667eea; font-weight: 600;">Loading map...</p>
+        </div>
+
+        <arcgis-map
+                basemap="topo-vector"
+                center="-118.244, 34.052"
+                zoom="12">
+            <arcgis-zoom position="top-left"></arcgis-zoom>
+            <arcgis-search position="top-right"></arcgis-search>
+            <arcgis-legend position="bottom-left"></arcgis-legend>
+        </arcgis-map>
+
+        <div class="controls">
+            <div class="control-group">
+                <label>Basemap Style</label>
+                <select id="basemap-select">
+                    <option value="topo-vector">Topographic</option>
+                    <option value="streets-vector">Streets</option>
+                    <option value="satellite">Satellite</option>
+                    <option value="hybrid">Hybrid</option>
+                    <option value="dark-gray-vector">Dark Gray</option>
+                    <option value="gray-vector">Light Gray</option>
+                    <option value="national-geographic">National Geographic</option>
+                    <option value="oceans">Oceans</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label>Quick Locations</label>
+                <select id="location-select">
+                    <option value="">Select a location...</option>
+                    <option value="-118.244,34.052,12">Los Angeles</option>
+                    <option value="-74.006,40.7128,12">New York City</option>
+                    <option value="-0.1276,51.5074,12">London</option>
+                    <option value="2.3522,48.8566,12">Paris</option>
+                    <option value="139.6917,35.6895,12">Tokyo</option>
+                    <option value="151.2093,-33.8688,12">Sydney</option>
+                </select>
+            </div>
+
+            <button id="add-marker">Add Marker at Center</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    const mapEl = document.querySelector('arcgis-map');
+    const basemapSelect = document.getElementById('basemap-select');
+    const locationSelect = document.getElementById('location-select');
+    const addMarkerBtn = document.getElementById('add-marker');
+    const loader = document.getElementById('loader');
+
+    // Hide loader when map is ready
+    mapEl.addEventListener('arcgisViewReadyChange', (e) => {
+        //if (e.detail) {
+        loader.style.display = 'none';
+        //}
+    });
+
+    // Change basemap
+    basemapSelect.addEventListener('change', (e) => {
+        mapEl.basemap = e.target.value;
+    });
+
+    // Navigate to location
+    locationSelect.addEventListener('change', (e) => {
+        if (e.target.value) {
+            const [lon, lat, zoom] = e.target.value.split(',');
+            mapEl.center = `${lon}, ${lat}`;
+            mapEl.zoom = parseInt(zoom);
+        }
+    });
+
+    // Add marker at center
+    addMarkerBtn.addEventListener('click', async () => {
+        await mapEl.arcgisViewReadyChange;
+        const view = mapEl.view;
+        const center = view.center;
+
+        // Create a graphic for the marker
+        const point = {
+            type: 'point',
+            longitude: center.longitude,
+            latitude: center.latitude
+        };
+
+        const markerSymbol = {
+            type: 'simple-marker',
+            color: [226, 119, 40],
+            outline: {
+                color: [255, 255, 255],
+                width: 2
+            },
+            size: 12
+        };
+
+        const pointGraphic = {
+            geometry: point,
+            symbol: markerSymbol,
+            attributes: {
+                name: 'Custom Marker',
+                description: `Lat: ${center.latitude.toFixed(4)}, Lon: ${center.longitude.toFixed(4)}`
+            },
+            popupTemplate: {
+                title: '{name}',
+                content: '{description}'
+            }
+        };
+
+        view.graphics.add(pointGraphic);
+    });
+</script>
+</body>
+</html>
