@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESRI Map Components App</title>
+    <title>An ESRI Components First App Template</title>
     <style>
         * {
             margin: 0;
@@ -93,6 +93,15 @@
             font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.2s;
+        }
+
+        arcgis-search::part(search-icon) {
+            color: #000000 !important;
+        }
+
+        .esri-search .esri-search__submit-button {
+            opacity: 1 !important;
+            color:black !important;
         }
 
         select:hover, select:focus {
@@ -269,7 +278,7 @@
 <div id="container">
     <header>
         <h1>Interactive Map Viewer</h1>
-        <p class="subtitle">Powered by ArcGIS Maps SDK for JavaScript</p>
+        <p class="subtitle">A Custom Maps JavaScript SDK Components-First App Template</p>
     </header>
 
     <div id="map-container">

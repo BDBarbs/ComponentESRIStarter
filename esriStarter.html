@@ -148,7 +148,7 @@
 <div id="container">
     <header>
         <h1>Interactive Map Viewer</h1>
-        <p class="subtitle">Powered by ArcGIS Maps SDK for JavaScript</p>
+        <p class="subtitle">A Custom Maps JavaScript SDK Components-First App Template</p>
     </header>
 
     <div id="map-container">
@@ -159,8 +159,8 @@
 
         <arcgis-map
                 basemap="topo-vector"
-                center="-118.244, 34.052"
-                zoom="12">
+                center="-97.71,30.34"
+                zoom="10">
             <arcgis-zoom position="top-left"></arcgis-zoom>
             <arcgis-search position="top-right"></arcgis-search>
             <arcgis-legend position="bottom-left"></arcgis-legend>
@@ -185,6 +185,8 @@
                 <label>Quick Locations</label>
                 <select id="location-select">
                     <option value="">Select a location...</option>
+                    <option value="-97.71,30.34,10" selected>Austin</option>
+                    <option value="-95.36,29.76,10">Houston</option>
                     <option value="-118.244,34.052,12">Los Angeles</option>
                     <option value="-74.006,40.7128,12">New York City</option>
                     <option value="-0.1276,51.5074,12">London</option>
