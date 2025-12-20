@@ -4,13 +4,13 @@ A modern web mapping application built with the ArcGIS Maps SDK for JavaScript u
 
 ## Features
 
-### 🗺️ **Interactive Mapping**
+### **Interactive Mapping**
 - Responsive, full-screen map interface
 - Smooth pan and zoom controls
 - Multiple basemap styles (Topographic, Streets, Satellite, Hybrid, and more)
 - Built-in search functionality to find locations worldwide
 
-### 📁 **GeoJSON Support**
+### **GeoJSON Support**
 - Upload and visualize custom GeoJSON files
 - Automatic geometry type detection and styling
 - Support for all GeoJSON geometry types:
@@ -20,13 +20,13 @@ A modern web mapping application built with the ArcGIS Maps SDK for JavaScript u
 - Interactive popups displaying feature properties
 - Auto-zoom to fit uploaded data on the map
 
-### 🎛️ **Layer Management**
+### **Layer Management**
 - Track all loaded GeoJSON layers
 - Toggle layer visibility
 - Remove individual layers
 - Visual layer list with controls
 
-### 📍 **Quick Navigation**
+### **Quick Navigation**
 - Pre-configured locations for major cities/areas:
   - Austin
   - Houston
@@ -39,7 +39,7 @@ A modern web mapping application built with the ArcGIS Maps SDK for JavaScript u
   - Sydney
 - Add custom markers at the map center with coordinate display
 
-### 🎨 **Modern UI/UX**
+### **Modern UI/UX**
 - Clean, gradient-based design
 - Responsive controls panel
 - Real-time notifications for user actions
@@ -163,7 +163,7 @@ Alternatively, you can deploy the files to any static hosting service:
 
 ### Uploading GeoJSON Files
 
-1. Click the **📁 Choose GeoJSON file** button
+1. Click the ** Choose GeoJSON file** button
 2. Select a `.geojson` or `.json` file from your computer
 3. The data automatically loads and displays on the map
 4. The map zooms to fit all features
